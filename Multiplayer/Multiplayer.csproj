@@ -42,7 +42,7 @@
           <HintPath>..\..\..\SteamLibrary\steamapps\common\Pineapple on pizza\Plugins\Facepunch.Steamworks.Win64.dll</HintPath>
         </Reference>
         <Reference Include="MelonLoader">
-          <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Pineapple on pizza\MelonLoader\net35\MelonLoader.dll</HintPath>
+          <HintPath>..\..\..\SteamLibrary\steamapps\common\Pineapple on pizza\MelonLoader\net35\MelonLoader.dll</HintPath>
         </Reference>
         <Reference Include="System" />
         <Reference Include="System.Core" />
