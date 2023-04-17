@@ -9,11 +9,11 @@
         <AppDesignerFolder>Properties</AppDesignerFolder>
         <RootNamespace>Multiplayer</RootNamespace>
         <AssemblyName>Multiplayer</AssemblyName>
-        <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+        <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <PlatformTarget>AnyCPU</PlatformTarget>
+        <PlatformTarget>x64</PlatformTarget>
         <DebugSymbols>true</DebugSymbols>
         <DebugType>full</DebugType>
         <Optimize>false</Optimize>
@@ -23,7 +23,7 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <PlatformTarget>AnyCPU</PlatformTarget>
+        <PlatformTarget>x64</PlatformTarget>
         <DebugType>pdbonly</DebugType>
         <Optimize>true</Optimize>
         <OutputPath>bin\Release\</OutputPath>
@@ -32,11 +32,14 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
+        <Reference Include="0Harmony">
+          <HintPath>..\..\..\SteamLibrary\steamapps\common\Pineapple on pizza\MelonLoader\net35\0Harmony.dll</HintPath>
+        </Reference>
         <Reference Include="Assembly-CSharp">
-          <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Pineapple on pizza\Pineapple on pizza_Data\Managed\Assembly-CSharp.dll</HintPath>
+          <HintPath>..\..\..\SteamLibrary\steamapps\common\Pineapple on pizza\Pineapple on pizza_Data\Managed\Assembly-CSharp.dll</HintPath>
         </Reference>
         <Reference Include="Facepunch.Steamworks.Win64">
-          <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Pineapple on pizza\Plugins\Facepunch.Steamworks.Win64.dll</HintPath>
+          <HintPath>..\..\..\SteamLibrary\steamapps\common\Pineapple on pizza\Plugins\Facepunch.Steamworks.Win64.dll</HintPath>
         </Reference>
         <Reference Include="MelonLoader">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Pineapple on pizza\MelonLoader\net35\MelonLoader.dll</HintPath>
@@ -46,12 +49,26 @@
         <Reference Include="System.Data" />
         <Reference Include="System.Xml" />
         <Reference Include="UnityEngine">
-          <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Pineapple on pizza\Pineapple on pizza_Data\Managed\UnityEngine.dll</HintPath>
+          <HintPath>..\..\..\SteamLibrary\steamapps\common\Pineapple on pizza\Pineapple on pizza_Data\Managed\UnityEngine.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+          <HintPath>..\..\..\SteamLibrary\steamapps\common\Pineapple on pizza\Pineapple on pizza_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.InputLegacyModule">
+          <HintPath>..\..\..\SteamLibrary\steamapps\common\Pineapple on pizza\Pineapple on pizza_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.PhysicsModule">
+          <HintPath>..\..\..\SteamLibrary\steamapps\common\Pineapple on pizza\Pineapple on pizza_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
         </Reference>
     </ItemGroup>
     <ItemGroup>
         <Compile Include="ModMain.cs" />
+        <Compile Include="NetworkHelper.cs" />
+        <Compile Include="PlayerManager.cs" />
+        <Compile Include="PlayerNetworkSender.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="RemotePlayer.cs" />
+        <Compile Include="SerializableStuff.cs" />
         <Compile Include="SteamIntegration.cs" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
