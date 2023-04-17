@@ -9,7 +9,6 @@ namespace MultiplayerMod
         {
             if (buildIndex != 1)
                 return;
-            
         }
     }
 }

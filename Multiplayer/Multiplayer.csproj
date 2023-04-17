@@ -35,6 +35,9 @@
         <Reference Include="Assembly-CSharp">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Pineapple on pizza\Pineapple on pizza_Data\Managed\Assembly-CSharp.dll</HintPath>
         </Reference>
+        <Reference Include="Facepunch.Steamworks.Win64">
+          <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Pineapple on pizza\Plugins\Facepunch.Steamworks.Win64.dll</HintPath>
+        </Reference>
         <Reference Include="MelonLoader">
           <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Pineapple on pizza\MelonLoader\net35\MelonLoader.dll</HintPath>
         </Reference>
@@ -49,6 +52,7 @@
     <ItemGroup>
         <Compile Include="ModMain.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="SteamIntegration.cs" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
