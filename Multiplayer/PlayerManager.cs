@@ -1,4 +1,5 @@
 ﻿using System;
+using HarmonyLib;
 using MelonLoader;
 using Steamworks;
 using Steamworks.Data;
@@ -37,6 +38,13 @@ namespace MultiplayerMod
                 return;
 
             _playerObjects = new GameObject("PlayerObjects");
+
+            var sm = GameObject.Find("SteamManager");
+            var g = ModMain._assembly.GetType("SteamStatsAndAchievements");
+            var geez = sm.GetComponent(g);
+            var field = Traverse.Create(geez).Field("instance");
+            field.SetValue(geez);
+
             Object.DontDestroyOnLoad(_playerObjects);
         }
 
