@@ -1,9 +1,9 @@
 ﻿# Delta's Pineapple on pizza Multiplayer Mod.
-Barely works
+Barely works, Windows only, use proton or something if you're not on windows
 
 ## Install 
 1. Download and install [Melonloader](https://github.com/LavaGang/MelonLoader/releases/latest/).
-2. Download the compiled mod from the [Releases](https://github.com/DeltaNeverUsed/POPMultiplayer/releases/Latest/) tab.
+2. Download the compiled mod from the [Releases](https://github.com/DeltaNeverUsed/POPMultiplayer/releases/latest/) tab.
 3. Extract the contents into the root of Pineapple on pizza's directory.
 4. And you're done!
 
