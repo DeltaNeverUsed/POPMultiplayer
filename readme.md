@@ -4,8 +4,6 @@ Barely works, Windows only, use proton or something if you're not on windows
 
 ![Demo](/Images/Multiplayer.gif)
 
-There are player models now, this is an old gif
-
 ## Install 
 1. Download and install [Melonloader](https://github.com/LavaGang/MelonLoader/releases/latest/).
 2. Download the compiled mod from the [Releases](https://github.com/DeltaNeverUsed/POPMultiplayer/releases/latest/) tab.
