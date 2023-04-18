@@ -12,13 +12,13 @@ namespace MultiplayerMod
     [Serializable]
     public class PlayerInfo
     {
-        public SerializableVector3 Position;
-        public SerializableQuaternion Rotation;
+        public SerializableVector3 position;
+        public SerializableQuaternion rotation;
     }
     [Serializable]
     public class PlayerSelect
     {
-        public int seed;
+        public int model;
     }
     
     
@@ -26,22 +26,20 @@ namespace MultiplayerMod
     {
         private static GameObject _playerObjects;
 
-        private static List<GameObject> _villagers;
+        public static List<GameObject> Villagers;
 
         public static Scr_LavaController Volcano;
-
-        public static int playerSeed;
-
+        
         public static void Init()
         {
             var roots = UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects();
 
-            _villagers = new List<GameObject>();
+            Villagers = new List<GameObject>();
 
             var temp = GameObject.FindObjectsOfType<VillagerCreator>();
             foreach (var villager in temp)
             {
-                _villagers.Add(villager.gameObject);
+                Villagers.Add(villager.gameObject);
             }
 
             foreach (var obj in roots)
@@ -54,12 +52,7 @@ namespace MultiplayerMod
             
             if (_playerObjects != null)
                 return;
-
-            var rand = new System.Random();
-            playerSeed = rand.Next();
             
-            MelonLogger.Msg("Your seed is: "+playerSeed);
-
             _playerObjects = new GameObject("PlayerObjects");
 
             var sm = GameObject.Find("SteamManager");
@@ -83,26 +76,28 @@ namespace MultiplayerMod
             
             player.transform.SetParent(_playerObjects.transform);
 
-            SteamIntegration.SendObj(new PlayerSelect { seed = playerSeed }, friend, P2PSend.Reliable);
+            SteamIntegration.SendObj(new PlayerSelect { model = 0 }, friend, P2PSend.Reliable);
         }
 
-        public static void SelectModel(string steamId, int seed)
+        public static void SelectModel(Friend friend, int model)
         {
+            var idString = friend.Id.ToString();
             foreach (Transform player in _playerObjects.transform)
             {
-                if (player.name != steamId)
+                if (player.name != idString)
                     continue;
                 
                 foreach (Transform child in player) {
-                    GameObject.Destroy(child.gameObject);
+                    GameObject.DestroyImmediate(child.gameObject);
                 }
 
-                var rand = new System.Random(seed);
-                var vil = _villagers[rand.Next(0, _villagers.Count)];
+                if (model >= Villagers.Count)
+                    return;
+                var vil = Villagers[model];
 
                 var vilin = GameObject.Instantiate(vil, player, false);
-                vilin.transform.position = new Vector3(0, -0.8329f, 0);
-                vilin.transform.rotation = Quaternion.identity;
+                vilin.transform.localPosition = new Vector3(0, -0.8329f, 0);
+                vilin.transform.localRotation = Quaternion.identity;
 
                 var compSoundEffectsVillagerController = vilin.GetComponent<SoundEffectsVillagerController>();
                 if (compSoundEffectsVillagerController != null)
@@ -120,6 +115,8 @@ namespace MultiplayerMod
                 if (compDeathVillagerController != null)
                     compDeathVillagerController.enabled = false;
 
+                MelonLogger.Msg($"{friend.Name}");
+                
                 Object.Destroy(player);
                 break;
             }
@@ -135,7 +132,8 @@ namespace MultiplayerMod
                 if (player.name != id)
                     continue;
                 
-                Object.Destroy(player);
+                MelonLogger.Msg("Tried to destroy");
+                Object.Destroy(player.gameObject);
                 break;
             }
         }
@@ -156,8 +154,8 @@ namespace MultiplayerMod
                     continue;
 
                 var rPlayer = player.GetComponent<RemotePlayer>(); // I know this is really bad, but i'm lazy
-                rPlayer.targetPos = playerInfo.Position;
-                rPlayer.targetRot = playerInfo.Rotation;
+                rPlayer.targetPos = playerInfo.position;
+                rPlayer.targetRot = playerInfo.rotation;
             }
         }
     }

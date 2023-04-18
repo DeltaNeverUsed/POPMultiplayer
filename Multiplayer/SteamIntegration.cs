@@ -1,22 +1,22 @@
 ﻿
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using MelonLoader;
 using Steamworks;
 using Steamworks.Data;
-using UnityEngine;
 
 namespace MultiplayerMod
 {
     public static class SteamIntegration
     {
         private static Lobby _lobby;
-        public static bool inLobby;
-        public static bool enabled;
+        private static bool InLobby;
+        public static bool Enabled;
         
         public static void Init()
         {
-            if (enabled)
+            if (Enabled)
                 return;
             
             SteamClient.Init(2263010);
@@ -29,13 +29,14 @@ namespace MultiplayerMod
 
             SteamMatchmaking.OnLobbyMemberJoined += PlayerManager.OnLobbyMemberJoined;
             SteamMatchmaking.OnLobbyMemberDisconnected += PlayerManager.OnLobbyMemberDisconnected;
+            SteamMatchmaking.OnLobbyMemberLeave += PlayerManager.OnLobbyMemberDisconnected;
             SteamMatchmaking.OnLobbyEntered += OnLobbyEntered;
             
             SteamNetworking.OnP2PSessionRequest += OnP2PSessionRequest;
 
             SteamFriends.OnGameLobbyJoinRequested += OnGameLobbyJoinRequested;
 
-            enabled = true;
+            Enabled = true;
         }
 
         public static void ReadPackets()
@@ -47,27 +48,34 @@ namespace MultiplayerMod
                     continue;
 
                 var user = packet.Value.SteamId;
-                var obj = NetworkHelper.ByteArrayToObject(packet.Value.Data);
-                var objType = obj.GetType();
-                switch (objType.Name)
+                try
                 {
-                    case "PlayerInfo":
-                        PlayerManager.UpdatePlayerPos(user.ToString(), (PlayerInfo)obj);
-                        break;
-                    case "String":
-                        var str = (string)obj;
-                        if (str != "fire")
-                            continue;
+                    var obj = NetworkHelper.ByteArrayToObject(packet.Value.Data);
+                    var objType = obj.GetType();
+                    switch (objType.Name)
+                    {
+                        case "PlayerInfo":
+                            PlayerManager.UpdatePlayerPos(user.ToString(), (PlayerInfo)obj);
+                            break;
+                        case "String":
+                            var str = (string)obj;
+                            if (str != "fire")
+                                continue;
 
-                        StartLavaFlow_Patch.dontNetwork = true;
-                        PlayerManager.Volcano.StartLavaFlow();
-                        StartLavaFlow_Patch.dontNetwork = false;
-                        break;
-                    case "PlayerSelect":
-                        PlayerManager.SelectModel(packet.Value.SteamId.ToString(), ((PlayerSelect)obj).seed);
-                        break;
+                            StartLavaFlow_Patch.dontNetwork = true;
+                            PlayerManager.Volcano.StartLavaFlow();
+                            StartLavaFlow_Patch.dontNetwork = false;
+                            break;
+                        case "PlayerSelect":
+                            PlayerManager.SelectModel(new Friend(packet.Value.SteamId), ((PlayerSelect)obj).model);
+                            break;
+                    }
                 }
-                
+                catch (Exception e)
+                {
+                    MelonLogger.Msg("Tried to ReadPackets but failed: "+e);
+                    throw;
+                }
             }
         }
 
@@ -98,7 +106,7 @@ namespace MultiplayerMod
 
         public static void ToggleLobby()
         {
-            if (inLobby)
+            if (InLobby)
             {
                 foreach (var friend in _lobby.Members)
                 {
@@ -106,7 +114,7 @@ namespace MultiplayerMod
                 }
                 
                 _lobby.Leave();
-                inLobby = false;
+                InLobby = false;
 
                 PlayerManager.LobbyLeft();
                 MelonLogger.Msg("Disconnected from lobby");
@@ -131,7 +139,7 @@ namespace MultiplayerMod
             _lobby.SetFriendsOnly();
             _lobby.SetJoinable(true);
 
-            inLobby = true;
+            InLobby = true;
 
             MelonLogger.Msg($"Created lobby: {_lobby.Id.Value}");
         }
@@ -145,7 +153,7 @@ namespace MultiplayerMod
                 return;
             }
 
-            inLobby = true;
+            InLobby = true;
             _lobby = lobby;
         }
 

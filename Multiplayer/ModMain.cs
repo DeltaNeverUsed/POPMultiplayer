@@ -1,10 +1,8 @@
-﻿using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using MelonLoader;
 using Steamworks;
 using UnityEngine;
 using HarmonyLib;
-using MultiplayerMod;
 
 namespace MultiplayerMod
 {
@@ -39,13 +37,30 @@ namespace MultiplayerMod
         {
             SteamClient.RunCallbacks();
 
-            if (!SteamIntegration.enabled)
+            if (!SteamIntegration.Enabled)
                 return;
             
             SteamIntegration.ReadPackets();
             
             if (Input.GetKeyDown(KeyCode.L))
                 SteamIntegration.ToggleLobby();
+
+            if (!Input.GetMouseButtonDown(0)) return;
+
+            if (Camera.main == null || !Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward,
+                    out var hit, 1)) return;
+
+            MelonLogger.Msg("Hit: " + hit.transform.name);
+            
+            if(hit.transform.GetComponent<VillagerCreator>() == null)
+                return;
+
+            var indexOf = PlayerManager.Villagers.IndexOf(hit.transform.gameObject);
+            if (indexOf == -1)
+                return;
+
+            SteamIntegration.SendObj2All(new PlayerSelect { model = indexOf }, P2PSend.Reliable);
+            MelonLogger.Msg("Request Model Change");
         }
 
         public override void OnDeinitializeMelon()

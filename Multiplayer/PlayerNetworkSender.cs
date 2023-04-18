@@ -9,7 +9,7 @@ namespace MultiplayerMod
     {
         private void FixedUpdate()
         {
-            if (!SteamIntegration.enabled)
+            if (!SteamIntegration.Enabled)
                 return;
             
             UpdateNetwork();
@@ -18,8 +18,8 @@ namespace MultiplayerMod
         private void UpdateNetwork()
         {
             var playerInfo = new PlayerInfo();
-            playerInfo.Position = transform.position;
-            playerInfo.Rotation = transform.rotation;
+            playerInfo.position = transform.position;
+            playerInfo.rotation = transform.rotation;
             
             SteamIntegration.SendObj2All(playerInfo);
         }

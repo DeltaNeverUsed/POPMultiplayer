@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using MelonLoader;
 using MultiplayerMod;
 
-[assembly: MelonInfo(typeof(ModMain), "Delta's Multiplayer mod", "0.0.2", "DeltaNeverUsed")]
+[assembly: MelonInfo(typeof(ModMain), "Delta's Multiplayer mod", "0.0.3", "DeltaNeverUsed")]
 [assembly: MelonGame("Majorariatto", "Pineapple on pizza")]
 
 // General Information about an assembly is controlled through the following 
