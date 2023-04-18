@@ -1,7 +1,6 @@
 ﻿# Delta's Pineapple on pizza Multiplayer Mod.
 Barely works, Windows only, use proton or something if you're not on windows
 
-
 ![Demo](/Images/Multiplayer.gif)
 
 ## Install 
@@ -13,6 +12,7 @@ Barely works, Windows only, use proton or something if you're not on windows
 ## Usage
 - You can create/leave a lobby by pressing the 'L' key on your keyboard
 - And you join the same way you'd join someone on any other steam game, by opening your friends list, clicking on your friend and clicking join.
+- Walk up to one of the goobers dancing and 'left click' on them to become them for other players
 
 ## Current state:
 - The eruption is synced
