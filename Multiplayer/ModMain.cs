@@ -49,18 +49,21 @@ namespace MultiplayerMod
 
             if (Camera.main == null || !Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward,
                     out var hit, 1)) return;
-
-            MelonLogger.Msg("Hit: " + hit.transform.name);
             
+            bool parent = false;
             if(hit.transform.GetComponent<VillagerCreator>() == null)
-                return;
+                if (hit.transform.parent.GetComponent<VillagerCreator>() == null)
+                    return;
+                else
+                    parent = true;
 
-            var indexOf = PlayerManager.Villagers.IndexOf(hit.transform.gameObject);
+            var obj = parent ? hit.transform.parent.gameObject : hit.transform.gameObject;
+            var indexOf = PlayerManager.Villagers.IndexOf(obj);
             if (indexOf == -1)
                 return;
 
             SteamIntegration.SendObj2All(new PlayerSelect { model = indexOf }, P2PSend.Reliable);
-            MelonLogger.Msg("Request Model Change");
+            MelonLogger.Msg("Request Model Change to: "+obj.name);
         }
 
         public override void OnDeinitializeMelon()
