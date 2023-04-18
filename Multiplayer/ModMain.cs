@@ -11,11 +11,13 @@ namespace MultiplayerMod
     public class ModMain : MelonMod
     {
         public static Assembly _assembly;
+
         public override void OnInitializeMelon()
         {
             var harmony = new HarmonyLib.Harmony("pineapple.DeltaNeverUsed.Multiplayer");
             
             _assembly = typeof(AchievementTrigger).Assembly;
+
             var unlockAchieventMethod = _assembly.GetType("SteamStatsAndAchievements").GetMethod("UnlockAchievent");
             
             harmony.Patch(unlockAchieventMethod, new HarmonyMethod(typeof(UnlockAchievent_Patch).GetMethod("unlock_Prefix")));

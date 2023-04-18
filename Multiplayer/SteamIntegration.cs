@@ -63,6 +63,9 @@ namespace MultiplayerMod
                         PlayerManager.Volcano.StartLavaFlow();
                         StartLavaFlow_Patch.dontNetwork = false;
                         break;
+                    case "PlayerSelect":
+                        PlayerManager.SelectModel(packet.Value.SteamId.ToString(), ((PlayerSelect)obj).seed);
+                        break;
                 }
                 
             }
@@ -77,6 +80,12 @@ namespace MultiplayerMod
                 var data = NetworkHelper.ObjectToByteArray(obj);
                 SteamNetworking.SendP2PPacket(friend.Id, data, data.Length, 0, netType);
             }
+        }
+        
+        public static void SendObj<T>(T obj, Friend friend, P2PSend netType = P2PSend.Unreliable)
+        {
+            var data = NetworkHelper.ObjectToByteArray(obj);
+            SteamNetworking.SendP2PPacket(friend.Id, data, data.Length, 0, netType);
         }
 
         private static void OnP2PSessionRequest(SteamId steamId)
